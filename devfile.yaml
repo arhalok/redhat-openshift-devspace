@@ -12,10 +12,14 @@ metadata:
   projectType: nodejs
   language: typescript
 components:
-  - name: dev-tools
+  - name: universal-developer-image
     container:
-      image: registry.access.redhat.com/ubi9/nodejs-20:latest
+      image: quay.io/devfile/universal-developer-image:ubi9-latest
       mountSources: true
+      sourceMapping: /projects
+      env:
+        - name: HOST_USERS
+          value: "false"
       memoryLimit: 2048Mi
       memoryRequest: 512Mi
       cpuLimit: 1500m
@@ -29,7 +33,7 @@ commands:
   - id: install-dependencies
     exec:
       label: "1. Install Dependencies"
-      component: dev-tools
+      component: universal-developer-image
       workingDir: ${PROJECT_SOURCE}
       commandLine: "npm install"
       group:
@@ -38,7 +42,7 @@ commands:
   - id: run-dev
     exec:
       label: "2. Run Development Server"
-      component: dev-tools
+      component: universal-developer-image
       workingDir: ${PROJECT_SOURCE}
       commandLine: "npm run dev"
       group:
