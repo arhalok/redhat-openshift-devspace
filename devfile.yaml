@@ -3,12 +3,13 @@ metadata:
   name: redhat-openshift-devspace
   version: 1.0.0
   displayName: Node.js & TypeScript Cloud Workspace
-  description: Lightweight cloud-native development environment for Red Hat OpenShift Dev Spaces.
+  description: Lightweight cloud-native development environment for Red Hat OpenShift Dev Spaces with Antigravity integration.
   tags:
     - Node.js
     - TypeScript
     - OpenShift
     - DevSpaces
+    - Antigravity
   projectType: nodejs
   language: typescript
 components:
@@ -30,12 +31,32 @@ components:
           exposure: public
           protocol: http
 commands:
+  - id: bootstrap-antigravity
+    exec:
+      label: "0. Bootstrap Antigravity & Environment"
+      component: universal-developer-image
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "bash ./scripts/devspace-bootstrap.sh"
+      group:
+        kind: build
+  - id: remote-control-status
+    exec:
+      label: "Antigravity: Remote Control Status"
+      component: universal-developer-image
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "bash ./scripts/devspace-bootstrap.sh --status"
+  - id: remote-control-start
+    exec:
+      label: "Antigravity: Start Remote Control"
+      component: universal-developer-image
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "bash ./scripts/devspace-bootstrap.sh --remote-control"
   - id: install-dependencies
     exec:
       label: "1. Install Dependencies"
       component: universal-developer-image
       workingDir: ${PROJECT_SOURCE}
-      commandLine: "npm install"
+      commandLine: "if [ -f package.json ]; then npm install; else echo 'No package.json found; skipping dependency installation.'; fi"
       group:
         kind: build
         isDefault: true
@@ -44,7 +65,10 @@ commands:
       label: "2. Run Development Server"
       component: universal-developer-image
       workingDir: ${PROJECT_SOURCE}
-      commandLine: "npm run dev"
+      commandLine: "if [ -f package.json ]; then npm run dev; else npx -y serve -l 3000 .; fi"
       group:
         kind: run
         isDefault: true
+events:
+  postStart:
+    - bootstrap-antigravity

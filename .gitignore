@@ -53,3 +53,11 @@ Thumbs.db
 .stylelintcache
 tmp/
 temp/
+
+# Antigravity CLI and daemon runtime files
+.gemini/
+antigravity*
+*.pid
+credentials*
+*oauth*
+
