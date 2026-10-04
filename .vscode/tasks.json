@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Bootstrap Antigravity Environment",
+      "type": "shell",
+      "command": "bash ./scripts/devspace-bootstrap.sh",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Antigravity: Remote Control Status",
+      "type": "shell",
+      "command": "bash ./scripts/devspace-bootstrap.sh --status",
+      "problemMatcher": []
+    },
+    {
+      "label": "Antigravity: Start Remote Control",
+      "type": "shell",
+      "command": "bash ./scripts/devspace-bootstrap.sh --remote-control",
+      "problemMatcher": []
+    }
+  ]
+}

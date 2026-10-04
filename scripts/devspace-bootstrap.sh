@@ -139,6 +139,18 @@ configure_path() {
   fi
   log_info "Current execution PATH includes: ${TARGET_BIN_DIR}"
 
+  # Configure ~/.bashrc.d modular profile (sourced by default in RHEL 9)
+  mkdir -p "${HOME}/.bashrc.d"
+  local bashrc_d="${HOME}/.bashrc.d/antigravity.sh"
+  cat > "${bashrc_d}" << 'EOF'
+# Antigravity CLI PATH
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+EOF
+  chmod +x "${bashrc_d}" 2>/dev/null || true
+  log_info "Configured ${bashrc_d}."
+
   # Configure ~/.bashrc idempotently
   local bashrc="${HOME}/.bashrc"
   local path_marker="# Antigravity CLI PATH"
