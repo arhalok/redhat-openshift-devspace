@@ -1,0 +1,21 @@
+{
+  "id": "warehouse_failure",
+  "name": "South Hub Outage & Depot Rebalance",
+  "description": "South Fulfillment Hub (Electronic City) temporarily offline for maintenance.",
+  "demandMultiplier": 1,
+  "vehicleAvailabilityMultiplier": 0.8,
+  "supplierLeadTimeMultiplier": 1.4,
+  "trafficDelayMultiplier": 1.2,
+  "disabledWarehouseIds": [
+    "wh-ecity-fulfillment"
+  ],
+  "injectedExceptions": [
+    {
+      "type": "WAREHOUSE_DELAY",
+      "severity": "CRITICAL",
+      "title": "South Hub Staging Offline",
+      "entityId": "wh-ecity-fulfillment",
+      "recommendedAction": "Reroute south corridor dispatches to North Central Depot."
+    }
+  ]
+}

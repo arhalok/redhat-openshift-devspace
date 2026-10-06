@@ -1,0 +1,19 @@
+{
+  "id": "demand_spike",
+  "name": "Festival Surge Demand Spike",
+  "description": "+60% demand surge across FMCG staples and beverages testing fleet limits.",
+  "demandMultiplier": 1.6,
+  "vehicleAvailabilityMultiplier": 0.85,
+  "supplierLeadTimeMultiplier": 1.2,
+  "trafficDelayMultiplier": 1.3,
+  "disabledWarehouseIds": [],
+  "injectedExceptions": [
+    {
+      "type": "ORDER_ANOMALY",
+      "severity": "WARNING",
+      "title": "Demand Surge Outstrips EV Fleet Capacity",
+      "entityId": "org-blr-core",
+      "recommendedAction": "Activate secondary carrier overflow capacity."
+    }
+  ]
+}

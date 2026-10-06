@@ -1,0 +1,11 @@
+{
+  "id": "return_capacity",
+  "name": "Backhaul Recovery Match",
+  "description": "Empty return legs from Jayanagar matched with Delta Hub packaging pickups.",
+  "demandMultiplier": 1,
+  "vehicleAvailabilityMultiplier": 1,
+  "supplierLeadTimeMultiplier": 1,
+  "trafficDelayMultiplier": 1,
+  "disabledWarehouseIds": [],
+  "injectedExceptions": []
+}

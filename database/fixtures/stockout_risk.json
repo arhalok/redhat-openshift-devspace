@@ -1,0 +1,19 @@
+{
+  "id": "stockout_risk",
+  "name": "Stockout Risk Alert",
+  "description": "Critical staple stockout risk detected in Jayanagar cluster.",
+  "demandMultiplier": 1.1,
+  "vehicleAvailabilityMultiplier": 1,
+  "supplierLeadTimeMultiplier": 1,
+  "trafficDelayMultiplier": 1,
+  "disabledWarehouseIds": [],
+  "injectedExceptions": [
+    {
+      "type": "STOCKOUT_RISK",
+      "severity": "CRITICAL",
+      "title": "Atta 10kg Safety Stock Breach at Laxmi Retail",
+      "entityId": "store-3",
+      "recommendedAction": "Trigger priority replenishment with Apex FMCG Hub."
+    }
+  ]
+}

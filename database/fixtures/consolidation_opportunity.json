@@ -1,0 +1,11 @@
+{
+  "id": "consolidation_opportunity",
+  "name": "Dynamic Consolidation Opportunity",
+  "description": "12 nearby deliveries in East Bangalore eligible for merging into 4 vehicle runs.",
+  "demandMultiplier": 1,
+  "vehicleAvailabilityMultiplier": 1,
+  "supplierLeadTimeMultiplier": 1,
+  "trafficDelayMultiplier": 1,
+  "disabledWarehouseIds": [],
+  "injectedExceptions": []
+}

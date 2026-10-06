@@ -1,0 +1,11 @@
+{
+  "id": "normal_day",
+  "name": "Normal Operations",
+  "description": "Baseline distribution and replenishment schedule across 50 Bangalore kiranas.",
+  "demandMultiplier": 1,
+  "vehicleAvailabilityMultiplier": 1,
+  "supplierLeadTimeMultiplier": 1,
+  "trafficDelayMultiplier": 1,
+  "disabledWarehouseIds": [],
+  "injectedExceptions": []
+}

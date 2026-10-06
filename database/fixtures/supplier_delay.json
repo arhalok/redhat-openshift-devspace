@@ -1,0 +1,19 @@
+{
+  "id": "supplier_delay",
+  "name": "Supplier Delay Bottleneck",
+  "description": "Cold chain maintenance at Kaveri Perishables extends lead times by +18 hours.",
+  "demandMultiplier": 1,
+  "vehicleAvailabilityMultiplier": 1,
+  "supplierLeadTimeMultiplier": 2.2,
+  "trafficDelayMultiplier": 1.1,
+  "disabledWarehouseIds": [],
+  "injectedExceptions": [
+    {
+      "type": "SUPPLIER_DELAY",
+      "severity": "WARNING",
+      "title": "Perishable Dairy Lead Time Spike",
+      "entityId": "sup-2",
+      "recommendedAction": "Re-route milk dispatch to Mysore Syndicate alternative hub."
+    }
+  ]
+}

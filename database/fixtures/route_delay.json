@@ -1,0 +1,19 @@
+{
+  "id": "route_delay",
+  "name": "Route Delay & Traffic Incident",
+  "description": "Arterial bottleneck on Old Airport Road delaying Route R-124.",
+  "demandMultiplier": 1,
+  "vehicleAvailabilityMultiplier": 1,
+  "supplierLeadTimeMultiplier": 1,
+  "trafficDelayMultiplier": 1.6,
+  "disabledWarehouseIds": [],
+  "injectedExceptions": [
+    {
+      "type": "ROUTE_DELAY",
+      "severity": "CRITICAL",
+      "title": "Projected 22-min SLA breach on Route R-124",
+      "entityId": "route-1",
+      "recommendedAction": "Move stops 4 and 5 from Route R-124 to Route R-131."
+    }
+  ]
+}

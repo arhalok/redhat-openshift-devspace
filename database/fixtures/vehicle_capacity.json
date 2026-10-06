@@ -1,0 +1,19 @@
+{
+  "id": "vehicle_capacity",
+  "name": "Vehicle Capacity Overload",
+  "description": "High volume biscuit orders exceed EV 3-wheeler payload envelope.",
+  "demandMultiplier": 1.2,
+  "vehicleAvailabilityMultiplier": 0.9,
+  "supplierLeadTimeMultiplier": 1,
+  "trafficDelayMultiplier": 1,
+  "disabledWarehouseIds": [],
+  "injectedExceptions": [
+    {
+      "type": "VEHICLE_CAPACITY_CONFLICT",
+      "severity": "WARNING",
+      "title": "EV 3-Wheeler V-027 Payload Exceeded",
+      "entityId": "veh-1",
+      "recommendedAction": "Reassign overflow crates to Tata Ace V-131."
+    }
+  ]
+}

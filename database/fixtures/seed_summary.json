@@ -1,0 +1,176 @@
+{
+  "metrics": {
+    "organizationCount": 1,
+    "userCount": 2,
+    "warehouseCount": 2,
+    "supplierCount": 10,
+    "storeCount": 50,
+    "vehicleCount": 100,
+    "productCount": 300,
+    "inventoryCount": 2000,
+    "orderCount": 500,
+    "routeCount": 100
+  },
+  "warehouses": [
+    {
+      "id": "wh-ypr-central",
+      "name": "North Bangalore Central Depot",
+      "address": "Plot 12, Yeshwanthpur Industrial Area",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "latitude": 13.0285,
+      "longitude": 77.5408,
+      "capacityUnits": 80000,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "wh-ecity-fulfillment",
+      "name": "South Bangalore Fulfillment Hub",
+      "address": "Hosur Road, Electronic City Phase 1",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "latitude": 12.8452,
+      "longitude": 77.6602,
+      "capacityUnits": 65000,
+      "status": "ACTIVE"
+    }
+  ],
+  "suppliersSample": [
+    {
+      "id": "sup-1",
+      "name": "Apex FMCG Distribution Hub",
+      "category": "Staples & Packaged Foods",
+      "phone": "+91 80 2839 1000",
+      "address": "Apex FMCG Distribution Hub Industrial Facility, Bangalore",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "postalCode": "560010",
+      "latitude": 13.021,
+      "longitude": 77.535,
+      "reliabilityScore": 89,
+      "fillRate": 89,
+      "averageLeadTimeHours": 26,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "sup-2",
+      "name": "Kaveri Valley Dairy & Perishables",
+      "category": "Dairy & Fresh",
+      "phone": "+91 80 2839 1001",
+      "address": "Kaveri Valley Dairy & Perishables Industrial Facility, Bangalore",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "postalCode": "560011",
+      "latitude": 12.852,
+      "longitude": 77.651,
+      "reliabilityScore": 88,
+      "fillRate": 92,
+      "averageLeadTimeHours": 13,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "sup-3",
+      "name": "Mysore Grain Wholesale Syndicate",
+      "category": "Flour, Rice & Sugar",
+      "phone": "+91 80 2839 1002",
+      "address": "Mysore Grain Wholesale Syndicate Industrial Facility, Bangalore",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "postalCode": "560012",
+      "latitude": 13.029,
+      "longitude": 77.528,
+      "reliabilityScore": 91,
+      "fillRate": 89,
+      "averageLeadTimeHours": 33,
+      "status": "ACTIVE"
+    }
+  ],
+  "storesSample": [
+    {
+      "id": "store-1",
+      "name": "Sharma General Store",
+      "ownerName": "Owner 1",
+      "phone": "+91 98450 10001",
+      "address": "11th Main, Indiranagar, Bangalore",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "postalCode": "560038",
+      "latitude": 12.962349104714207,
+      "longitude": 77.64194577544815,
+      "h3Cell": "88618925d3fffff",
+      "status": "ACTIVE",
+      "receivingStart": "08:00:00",
+      "receivingEnd": "21:00:00"
+    },
+    {
+      "id": "store-2",
+      "name": "Venkateshwara Super Traders",
+      "ownerName": "Owner 2",
+      "phone": "+91 98450 10002",
+      "address": "12th Main, Koramangala, Bangalore",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "postalCode": "560038",
+      "latitude": 12.941099205289968,
+      "longitude": 77.63250664237366,
+      "h3Cell": "8861892557fffff",
+      "status": "ACTIVE",
+      "receivingStart": "08:00:00",
+      "receivingEnd": "21:00:00"
+    },
+    {
+      "id": "store-3",
+      "name": "Laxmi Retail & General Provisions",
+      "ownerName": "Owner 3",
+      "phone": "+91 98450 10003",
+      "address": "13th Main, Jayanagar, Bangalore",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "postalCode": "560038",
+      "latitude": 12.927318361330592,
+      "longitude": 77.59011516167783,
+      "h3Cell": "886189240bfffff",
+      "status": "ACTIVE",
+      "receivingStart": "08:00:00",
+      "receivingEnd": "21:00:00"
+    }
+  ],
+  "productsSample": [
+    {
+      "id": "prod-1",
+      "sku": "SKU-FMCG-0001",
+      "name": "Aashirvaad Superior Shudh Chakki Atta 10kg",
+      "category": "Staples",
+      "unit": "PACK",
+      "packSize": "1kg",
+      "weightKg": 3.49,
+      "volumeM3": 0.0042,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "prod-2",
+      "sku": "SKU-FMCG-0002",
+      "name": "Fortune Sunlite Refined Sunflower Oil 1L",
+      "category": "Snacks",
+      "unit": "PACK",
+      "packSize": "1kg",
+      "weightKg": 3.9,
+      "volumeM3": 0.0047,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "prod-3",
+      "sku": "SKU-FMCG-0003",
+      "name": "Parle-G Gold Biscuits Case",
+      "category": "Beverages",
+      "unit": "PACK",
+      "packSize": "1kg",
+      "weightKg": 3.56,
+      "volumeM3": 0.0043,
+      "status": "ACTIVE"
+    }
+  ],
+  "ordersCount": 500,
+  "routesCount": 100,
+  "inventoryCount": 2000
+}
