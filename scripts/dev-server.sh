@@ -38,8 +38,9 @@ start_server() {
   cd "${PROJECT_DIR}"
   
   export PORT="${PORT}"
-  nohup npm run dev > "${LOG_FILE}" 2>&1 &
+  nohup npm run dev </dev/null > "${LOG_FILE}" 2>&1 &
   local new_pid=$!
+  disown "${new_pid}" 2>/dev/null || true
   echo "${new_pid}" > "${PID_FILE}"
 
   # Wait up to 10 seconds for port to start listening
@@ -92,7 +93,7 @@ status_server() {
 
 show_logs() {
   if [ -f "${LOG_FILE}" ]; then
-    tail -n 50 -f "${LOG_FILE}"
+    tail -n 50 "${LOG_FILE}"
   else
     echo "No log file found at ${LOG_FILE}."
   fi
