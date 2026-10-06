@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLogistics } from '../../lib/logistics-state';
 import {
   Sparkles,
@@ -16,6 +16,11 @@ import {
   Fuel,
   Truck,
   RotateCcw,
+  Pencil,
+  Plus,
+  Play,
+  X,
+  Sliders,
 } from 'lucide-react';
 
 interface CopilotMessage {
@@ -38,6 +43,7 @@ export function AICopilotView() {
     setActiveTab,
   } = useLogistics();
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const [inputQuery, setInputQuery] = useState('');
   const [messages, setMessages] = useState<CopilotMessage[]>([
     {
@@ -59,14 +65,37 @@ export function AICopilotView() {
 
   const [confirmDialogAction, setConfirmDialogAction] = useState<CopilotMessage | null>(null);
 
-  const suggestedPrompts = [
-    'What needs attention?',
-    'Why is Store #204 at risk?',
-    "Find today's inefficient routes.",
-    'Which orders can be consolidated?',
-    'Show unused return capacity.',
-    'Simulate 20% demand increase.',
-  ];
+  const [promptsList, setPromptsList] = useState<string[]>([
+    'Why are deliveries delayed today?',
+    'Which stores are at stockout risk?',
+    'Find unused vehicle capacity.',
+    'What should we optimize first?',
+    'What changed in today’s network?',
+    'Simulate a 20% demand increase.',
+  ]);
+
+  const [systemPrompt, setSystemPrompt] = useState<string>(
+    'You are KiranaFlow AI Copilot. Analyze Bangalore distribution telemetry, enforce deterministic calculations for money/inventory, provide structured answers with evidence, and suggest verified preview-apply actions.'
+  );
+  const [showPromptSettings, setShowPromptSettings] = useState(false);
+  const [newPromptText, setNewPromptText] = useState('');
+
+  const handleSelectPromptForEdit = (promptText: string) => {
+    setInputQuery(promptText);
+    inputRef.current?.focus();
+    addToast('Prompt Loaded', 'You can now modify the prompt in the input box below before sending.', 'info');
+  };
+
+  const handleAddPrompt = () => {
+    if (!newPromptText.trim()) return;
+    setPromptsList((prev) => [...prev, newPromptText.trim()]);
+    setNewPromptText('');
+    addToast('Prompt Added', 'New query template added to your quick prompts.', 'success');
+  };
+
+  const handleRemovePrompt = (idxToRemove: number) => {
+    setPromptsList((prev) => prev.filter((_, idx) => idx !== idxToRemove));
+  };
 
   const handleSend = (text: string) => {
     if (!text.trim()) return;
@@ -243,33 +272,120 @@ export function AICopilotView() {
     <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            AI Operations Copilot
-          </h1>
-          <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/30">
-            STRUCTURED REASONING
-          </span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-white tracking-tight">
+              AI Operations Copilot
+            </h1>
+            <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/30">
+              STRUCTURED REASONING
+            </span>
+          </div>
+
+          <button
+            onClick={() => setShowPromptSettings(!showPromptSettings)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-700 hover:border-purple-500/60 hover:bg-gray-800 text-xs text-gray-300 transition"
+          >
+            <Sliders className="w-3.5 h-3.5 text-purple-400" />
+            <span>{showPromptSettings ? 'Hide Prompt Settings' : 'Modify Prompt & Settings'}</span>
+          </button>
         </div>
         <p className="text-xs text-gray-400 mt-1">
           Operational inquiry engine delivering structured answers, telemetry evidence, and verified action previews.
         </p>
       </div>
 
+      {/* Prompt Settings & Customization Panel */}
+      {showPromptSettings && (
+        <div className="bg-[#0f172a] border border-purple-500/30 rounded-xl p-4 shadow-xl space-y-4 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+            <div className="flex items-center gap-2 text-xs font-bold text-white">
+              <Pencil className="w-3.5 h-3.5 text-purple-400" />
+              <span>Modify AI Copilot Prompts</span>
+            </div>
+            <span className="text-[11px] text-gray-400">Customize query templates and system instructions</span>
+          </div>
+
+          {/* System Prompt Customizer */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-semibold text-gray-300 uppercase tracking-wider">
+              System Instruction Prompt:
+            </label>
+            <textarea
+              value={systemPrompt}
+              onChange={(e) => setSystemPrompt(e.target.value)}
+              rows={2}
+              className="w-full bg-[#0b0f19] border border-gray-700 text-xs rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-purple-500 font-mono"
+            />
+          </div>
+
+          {/* Add New Custom Prompt */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-semibold text-gray-300 uppercase tracking-wider">
+              Add New Prompt Template:
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newPromptText}
+                onChange={(e) => setNewPromptText(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleAddPrompt()}
+                placeholder="e.g. Which suppliers have delivery delays exceeding 1 hour?"
+                className="flex-1 bg-[#0b0f19] border border-gray-700 text-xs rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
+              />
+              <button
+                onClick={handleAddPrompt}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add Prompt</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Suggested Quick Prompts (Section 27) */}
       <div>
-        <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">
-          Suggested Operational Queries:
+        <div className="flex items-center justify-between mb-2">
+          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+            Operational Prompts (Click to edit &bull; ▶ to send):
+          </div>
+          <span className="text-[10px] text-gray-500">
+            Click chip to modify in input box
+          </span>
         </div>
         <div className="flex flex-wrap gap-2">
-          {suggestedPrompts.map((prompt, idx) => (
-            <button
+          {promptsList.map((prompt, idx) => (
+            <div
               key={idx}
-              onClick={() => handleSend(prompt)}
-              className="px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 hover:border-purple-500/50 hover:bg-purple-950/20 text-xs text-gray-300 transition text-left"
+              className="group flex items-center rounded-lg bg-gray-900 border border-gray-800 hover:border-purple-500/50 hover:bg-purple-950/20 text-xs text-gray-300 transition overflow-hidden"
             >
-              &ldquo;{prompt}&rdquo;
-            </button>
+              <button
+                onClick={() => handleSelectPromptForEdit(prompt)}
+                className="px-3 py-1.5 text-left hover:text-white flex items-center gap-1.5"
+                title="Click to load and modify in prompt input box"
+              >
+                <Pencil className="w-3 h-3 text-purple-400 opacity-60 group-hover:opacity-100" />
+                <span>&ldquo;{prompt}&rdquo;</span>
+              </button>
+              <button
+                onClick={() => handleSend(prompt)}
+                className="px-2 py-1.5 border-l border-gray-800 hover:bg-purple-600 hover:text-white text-gray-400 transition"
+                title="Send prompt directly"
+              >
+                <Play className="w-3 h-3" />
+              </button>
+              {showPromptSettings && (
+                <button
+                  onClick={() => handleRemovePrompt(idx)}
+                  className="px-1.5 py-1.5 border-l border-gray-800 hover:bg-red-900/60 text-gray-500 hover:text-red-300 transition"
+                  title="Remove prompt"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
           ))}
         </div>
       </div>
@@ -363,6 +479,7 @@ export function AICopilotView() {
         {/* Input Bar */}
         <div className="mt-4 pt-3 border-t border-gray-800 flex items-center gap-2">
           <input
+            ref={inputRef}
             type="text"
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}

@@ -6,6 +6,7 @@
 import { runInvariantsTests } from './unit/invariants.test';
 import { runAlgorithmsTests } from './unit/algorithms.test';
 import { runApiContractsTests } from './api/api-contracts.test';
+import { run21StepQAScenario } from './qa-scenario-21-steps';
 
 async function main() {
   console.log('================================================================');
@@ -29,6 +30,11 @@ async function main() {
   const api = await runApiContractsTests();
   totalPassed += api.passed;
   totalFailed += api.failed;
+
+  // 4. Section 66: 21-Step Final QA Scenario
+  const qa = await run21StepQAScenario();
+  totalPassed += qa.passed;
+  totalFailed += qa.failed;
 
   console.log('\n================================================================');
   console.log(`TOTAL RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);

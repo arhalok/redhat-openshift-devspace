@@ -40,11 +40,16 @@ export const RunSimulationSchema = z.object({
 });
 
 // AI Query schema (Sections 50, 51)
-export const AIQuerySchema = z.object({
-  prompt: z.string().min(1, 'prompt is required'),
-  workspaceId: z.string().optional(),
-  confirmActionId: z.string().optional(),
-});
+export const AIQuerySchema = z
+  .object({
+    prompt: z.string().optional(),
+    query: z.string().optional(),
+    workspaceId: z.string().optional(),
+    confirmActionId: z.string().optional(),
+  })
+  .refine((data) => !!(data.prompt || data.query), {
+    message: 'prompt or query is required',
+  });
 
 // Recommendation action schema (Section 20)
 export const RecommendationActionSchema = z.object({

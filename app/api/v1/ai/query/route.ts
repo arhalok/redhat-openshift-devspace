@@ -20,7 +20,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const lower = parsed.data.prompt.toLowerCase();
+    const promptText = parsed.data.prompt || parsed.data.query || '';
+    const lower = promptText.toLowerCase();
 
     // Guardrail: Return structured output matching Section 51
     let summary: string;
