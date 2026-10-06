@@ -17,6 +17,34 @@
       "problemMatcher": []
     },
     {
+      "label": "Next.js: Start Dev Server (0.0.0.0:3000)",
+      "type": "shell",
+      "command": "npm run dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting",
+          "endsPattern": "Ready in"
+        }
+      }
+    },
+    {
+      "label": "Next.js: Background Server (Persistent Daemon)",
+      "type": "shell",
+      "command": "./scripts/dev-server.sh start",
+      "problemMatcher": []
+    },
+    {
+      "label": "Next.js: Stop Dev Server",
+      "type": "shell",
+      "command": "./scripts/dev-server.sh stop",
+      "problemMatcher": []
+    },
+    {
       "label": "Antigravity: Remote Control Status",
       "type": "shell",
       "command": "bash ./scripts/devspace-bootstrap.sh --status",
