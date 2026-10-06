@@ -29,7 +29,7 @@ components:
         - name: node-app
           targetPort: 3000
           exposure: public
-          protocol: http
+          protocol: https
 commands:
   - id: bootstrap-antigravity
     exec:
