@@ -60,12 +60,12 @@ export function AICopilotView() {
   const [confirmDialogAction, setConfirmDialogAction] = useState<CopilotMessage | null>(null);
 
   const suggestedPrompts = [
-    'Why are deliveries delayed today?',
-    'Which stores are at stockout risk?',
-    'Find unused vehicle capacity.',
-    'What should we optimize first?',
-    'What changed in today’s network?',
-    'Simulate a 20% demand increase.',
+    'What needs attention?',
+    'Why is Store #204 at risk?',
+    "Find today's inefficient routes.",
+    'Which orders can be consolidated?',
+    'Show unused return capacity.',
+    'Simulate 20% demand increase.',
   ];
 
   const handleSend = (text: string) => {
@@ -81,12 +81,42 @@ export function AICopilotView() {
     setMessages((prev) => [...prev, userMsg]);
     setInputQuery('');
 
-    // Simulated contextual AI response conforming to Section 28
+    // Simulated contextual AI response conforming to Section 27 & 28
     setTimeout(() => {
       const lower = text.toLowerCase();
       let assistantMsg: CopilotMessage;
 
-      if (lower.includes('stockout') || lower.includes('store')) {
+      if (lower.includes('attention') || lower.includes('what needs')) {
+        assistantMsg = {
+          id: `ai-${Date.now()}`,
+          sender: 'assistant',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          answer: 'I found 3 operational issues requiring supervisor attention:',
+          evidence: [
+            '1. Store #204: Stockout risk tomorrow (Recommended: replenish 18 cases)',
+            '2. Route #104 / V-027: 22% underutilized on Domlur leg',
+            '3. Vehicle MH-12 / V-027: 1.8 tons unused on return trip from Jayanagar',
+          ],
+          recommendedAction: 'Replenish Store #204 and consolidate Route #104 with return backhaul.',
+          actionType: 'REASSIGN_STOPS',
+          actionApplied: false,
+        };
+      } else if (lower.includes('delay') || lower.includes('late') || lower.includes('risk')) {
+        assistantMsg = {
+          id: `ai-${Date.now()}`,
+          sender: 'assistant',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          answer: '11 deliveries are at risk due to corridor congestion and cold-facility supplier delay.',
+          evidence: [
+            'Route R-124 is overloaded by 14% cubic volume with 4 stops in high-traffic South Bangalore',
+            'Kaveri Perishables cold facility logged a +45m dispatch staging delay',
+            'On-time SLA projected to drop to 82% without stop rebalancing',
+          ],
+          recommendedAction: 'Move stops 4 and 5 from Route R-124 to Route R-131.',
+          actionType: 'REASSIGN_STOPS',
+          actionApplied: false,
+        };
+      } else if (lower.includes('stockout') || lower.includes('store') || lower.includes('inventory')) {
         assistantMsg = {
           id: `ai-${Date.now()}`,
           sender: 'assistant',
@@ -96,7 +126,7 @@ export function AICopilotView() {
             'Current on-hand inventory: 1 bag of Aashirvaad Atta 10kg',
             'Cluster consumption velocity: 5.4 bags/day',
             'Stockout projected in 3.6 hours',
-            'Supplier lead time: 18 hours',
+            'Supplier lead time: 18 hours from FreshGro Hub',
           ],
           recommendedAction: 'Batch emergency replenishment order with Apex FMCG Hub.',
           actionType: 'TRIGGER_REPLENISHMENT',
@@ -117,7 +147,7 @@ export function AICopilotView() {
           actionType: 'REALLOCATE_VEHICLE',
           actionApplied: false,
         };
-      } else if (lower.includes('optimize') || lower.includes('consolidat')) {
+      } else if (lower.includes('optimize') || lower.includes('consolidat') || lower.includes('first')) {
         assistantMsg = {
           id: `ai-${Date.now()}`,
           sender: 'assistant',
@@ -132,12 +162,42 @@ export function AICopilotView() {
           actionType: 'CONSOLIDATE_ORDERS',
           actionApplied: false,
         };
+      } else if (lower.includes('changed') || lower.includes('network') || lower.includes('today')) {
+        assistantMsg = {
+          id: `ai-${Date.now()}`,
+          sender: 'assistant',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          answer: 'Network telemetry updated: 3 new supplier shipments arrived, 2 consolidation proposals ready.',
+          evidence: [
+            'FreshGro Hub inbound cross-dock completed at 06:30 IST',
+            'Jayanagar Kirana cluster triggered automated replenishment reorder points',
+            'Fleet utilization improved by 4.2% following morning dispatch re-sequencing',
+          ],
+          recommendedAction: 'Review open exceptions in Control Tower.',
+          actionType: 'REASSIGN_STOPS',
+          actionApplied: false,
+        };
+      } else if (lower.includes('demand') || lower.includes('simulate') || lower.includes('increase')) {
+        assistantMsg = {
+          id: `ai-${Date.now()}`,
+          sender: 'assistant',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          answer: 'Simulation: A +20% demand surge increases fleet saturation to 94.8% and creates 2 vehicle bottlenecks.',
+          evidence: [
+            'Peak cargo volume: +1,480 kg across Indiranagar & Koramangala corridors',
+            'Requires 3 reserve Tata Ace units deployed from Central Hub',
+            'Projected on-time SLA drops from 94.2% to 88.5% without route consolidation',
+          ],
+          recommendedAction: 'Apply dynamic consolidation proposal C-801 to absorb demand surge.',
+          actionType: 'CONSOLIDATE_ORDERS',
+          actionApplied: false,
+        };
       } else {
         assistantMsg = {
           id: `ai-${Date.now()}`,
           sender: 'assistant',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          answer: 'Network telemetry is operating within acceptable limits across 61 routes.',
+          answer: `Network inquiry received: "${text}". All operational parameters are active.`,
           evidence: [
             'On-time SLA compliance: 94.2%',
             'Average vehicle capacity utilization: 76.4%',

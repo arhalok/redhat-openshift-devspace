@@ -37,6 +37,19 @@ export function ToastContainer() {
               {toast.message && (
                 <div className="text-xs text-gray-300 mt-0.5 leading-relaxed">{toast.message}</div>
               )}
+              {toast.action && (
+                <div className="mt-2">
+                  <button
+                    onClick={() => {
+                      toast.action?.onClick();
+                      removeToast(toast.id);
+                    }}
+                    className="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition shadow"
+                  >
+                    {toast.action.label}
+                  </button>
+                </div>
+              )}
             </div>
             <button
               onClick={() => removeToast(toast.id)}

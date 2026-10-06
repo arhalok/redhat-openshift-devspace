@@ -342,6 +342,31 @@ export function LogisticsRoutesView() {
               </div>
             </div>
 
+            {/* Section 22: Route Explainability */}
+            <div className="p-3.5 rounded-lg bg-gray-900 border border-purple-900/40 space-y-2">
+              <div className="text-[10px] uppercase font-bold text-purple-400 tracking-wider">
+                Why this route was generated:
+              </div>
+              <ul className="space-y-1.5 text-gray-200">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>1. Nearby deliveries were grouped by spatial corridor.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>2. Vehicle cubic payload limits ({selectedRoute.capacityPct}% capacity) were respected.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>3. Morning kirana delivery windows were preserved without SLA breach.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>4. High-priority stockout replenishment orders were sequenced first.</span>
+                </li>
+              </ul>
+            </div>
+
             <div className="p-3 rounded-lg bg-blue-950/20 border border-blue-900/40 text-gray-300">
               <span className="font-bold text-white">Operational Notes:</span> Stop 4 delivery window closes at 15:00. Traffic buffer currently calculated at +14m.
             </div>

@@ -5,6 +5,7 @@ import { useLogistics } from '../../lib/logistics-state';
 import { OrderRecord } from '../../lib/demo-data';
 import { StatusBadge, mapOrderStatusToVariant } from '../common/StatusBadge';
 import { Drawer } from '../common/Drawer';
+import { EmptyState } from '../common/EmptyState';
 import {
   ShoppingCart,
   Clock,
@@ -17,16 +18,19 @@ import {
   Filter,
   Search,
   Check,
+  Plus,
+  ShieldAlert,
 } from 'lucide-react';
 
 export function OrderManagementView() {
-  const { orders, selectedOrder, setSelectedOrder } = useLogistics();
+  const { orders, selectedOrder, setSelectedOrder, setOrderCreationModalOpen, addToast } = useLogistics();
 
   const [activeTab, setActiveTab] = useState<
     'ALL' | 'PENDING' | 'CONFIRMED' | 'PREPARING' | 'IN_TRANSIT' | 'DELIVERED' | 'EXCEPTION'
   >('ALL');
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [confirmDispatchOrder, setConfirmDispatchOrder] = useState<OrderRecord | null>(null);
 
   const filteredOrders = orders.filter((ord) => {
     const matchesTab = activeTab === 'ALL' || ord.status === activeTab;
@@ -50,6 +54,16 @@ export function OrderManagementView() {
     { id: 'EXCEPTION', label: 'Exceptions' },
   ];
 
+  const handleExecuteDispatch = () => {
+    if (!confirmDispatchOrder) return;
+    addToast(
+      'Vehicle Dispatched',
+      `Order ${confirmDispatchOrder.orderNumber} staged onto route ${confirmDispatchOrder.deliveryRoute}.`,
+      'success'
+    );
+    setConfirmDispatchOrder(null);
+  };
+
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
@@ -68,16 +82,26 @@ export function OrderManagementView() {
           </p>
         </div>
 
-        {/* Search */}
-        <div className="relative w-72">
-          <Search className="w-4 h-4 text-gray-500 absolute left-3 top-2.5" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search order ID, store, vendor..."
-            className="w-full bg-[#111827] border border-gray-700 text-xs rounded-lg pl-9 pr-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
-          />
+        {/* Search & Rapid Order Creation CTA */}
+        <div className="flex items-center gap-3">
+          <div className="relative w-64">
+            <Search className="w-4 h-4 text-gray-500 absolute left-3 top-2.5" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search order ID, store, vendor..."
+              className="w-full bg-[#111827] border border-gray-700 text-xs rounded-lg pl-9 pr-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <button
+            onClick={() => setOrderCreationModalOpen(true)}
+            className="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition shadow flex items-center gap-1.5 shrink-0"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Create Order (&lt;30s)</span>
+          </button>
         </div>
       </div>
 
@@ -114,29 +138,31 @@ export function OrderManagementView() {
 
       {/* Orders Data Table (Section 18) */}
       <div className="bg-[#111827] border border-gray-800 rounded-xl overflow-hidden shadow-lg">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[#0b0f19] text-gray-400 uppercase tracking-wider font-semibold border-b border-gray-800">
-              <tr>
-                <th className="py-3.5 px-4">Order ID</th>
-                <th className="py-3.5 px-4">Store</th>
-                <th className="py-3.5 px-4">Value</th>
-                <th className="py-3.5 px-4">Supplier</th>
-                <th className="py-3.5 px-4">Status</th>
-                <th className="py-3.5 px-4">Delivery Route</th>
-                <th className="py-3.5 px-4">Created</th>
-                <th className="py-3.5 px-4 text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-800 text-gray-300">
-              {filteredOrders.length === 0 ? (
+        {filteredOrders.length === 0 ? (
+          <EmptyState
+            title="No orders found matching this filter"
+            description="Create a replenishment order or change the active lifecycle status tab."
+            actionText="Create Order Now"
+            onAction={() => setOrderCreationModalOpen(true)}
+            icon={<ShoppingCart className="w-6 h-6" />}
+          />
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[#0b0f19] text-gray-400 uppercase tracking-wider font-semibold border-b border-gray-800">
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-gray-500">
-                    No orders found matching the selected filter.
-                  </td>
+                  <th className="py-3.5 px-4">Order ID</th>
+                  <th className="py-3.5 px-4">Store</th>
+                  <th className="py-3.5 px-4">Value</th>
+                  <th className="py-3.5 px-4">Supplier</th>
+                  <th className="py-3.5 px-4">Status</th>
+                  <th className="py-3.5 px-4">Delivery Route</th>
+                  <th className="py-3.5 px-4">Created</th>
+                  <th className="py-3.5 px-4 text-center">Action</th>
                 </tr>
-              ) : (
-                filteredOrders.map((ord) => (
+              </thead>
+              <tbody className="divide-y divide-gray-800 text-gray-300">
+                {filteredOrders.map((ord) => (
                   <tr
                     key={ord.id}
                     onClick={() => setSelectedOrder(ord)}
@@ -171,11 +197,11 @@ export function OrderManagementView() {
                       </button>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* Order Detail Drawer (Section 19) */}
@@ -186,12 +212,22 @@ export function OrderManagementView() {
           title={selectedOrder.orderNumber}
           subtitle={`Detailed dispatch lifecycle for ${selectedOrder.storeName}`}
           footer={
-            <button
-              onClick={() => setSelectedOrder(null)}
-              className="px-4 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-white transition"
-            >
-              Close
-            </button>
+            <>
+              {selectedOrder.status === 'CONFIRMED' && (
+                <button
+                  onClick={() => setConfirmDispatchOrder(selectedOrder)}
+                  className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition shadow"
+                >
+                  Dispatch Vehicle
+                </button>
+              )}
+              <button
+                onClick={() => setSelectedOrder(null)}
+                className="px-4 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-white transition"
+              >
+                Close
+              </button>
+            </>
           }
         >
           <div className="flex flex-col gap-5">
@@ -270,7 +306,7 @@ export function OrderManagementView() {
               </div>
             </div>
 
-            {/* Timeline (Section 19: Use a timeline instead of paragraphs) */}
+            {/* Timeline */}
             <div>
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
                 Lifecycle Step Timeline
@@ -282,7 +318,6 @@ export function OrderManagementView() {
 
                   return (
                     <div key={idx} className="relative text-xs">
-                      {/* Timeline dot */}
                       <span
                         className={`absolute -left-[31px] top-0.5 w-3 h-3 rounded-full border-2 ${
                           isDone
@@ -311,6 +346,47 @@ export function OrderManagementView() {
             </div>
           </div>
         </Drawer>
+      )}
+
+      {/* Confirmation Dialog for Irreversible Operations (Section 16) */}
+      {confirmDispatchOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity"
+            onClick={() => setConfirmDispatchOrder(null)}
+          />
+
+          <div className="relative w-full max-w-md bg-[#0f172a] border border-gray-700 rounded-xl shadow-2xl p-6 z-10 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 shrink-0">
+                <ShieldAlert className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">
+                  Confirm Vehicle Dispatch
+                </h3>
+                <p className="text-xs text-gray-400 mt-1">
+                  Section 16: This action will dispatch vehicle {confirmDispatchOrder.vehicleCode} onto {confirmDispatchOrder.deliveryRoute}. Once rolling, stops cannot be retracted without return penalty.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                onClick={() => setConfirmDispatchOrder(null)}
+                className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleExecuteDispatch}
+                className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition shadow"
+              >
+                Confirm Dispatch
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

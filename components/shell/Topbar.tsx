@@ -22,9 +22,13 @@ export function Topbar() {
     setActiveScenario,
     setCommandPaletteOpen,
     setCopilotOpen,
+    setKeyboardHelpOpen,
     exceptions,
     addToast,
     setActiveTab,
+    lastUpdated,
+    refreshTelemetry,
+    resetDemo,
   } = useLogistics();
 
   const [scenarioDropdownOpen, setScenarioDropdownOpen] = useState(false);
@@ -201,22 +205,43 @@ export function Topbar() {
           )}
         </div>
 
+        {/* DEMO DATA indicator & Reset Button (Section 52) */}
+        <div className="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded border border-amber-500/30 bg-amber-500/10 text-[11px] font-mono text-amber-300">
+          <span className="font-bold">DEMO DATA</span>
+          <button
+            onClick={resetDemo}
+            className="text-amber-400 hover:text-white underline text-[10px] ml-1 font-sans"
+            title="Reset to clean baseline data"
+          >
+            Reset
+          </button>
+        </div>
+
         {/* AI Copilot Quick Button */}
         <button
           onClick={() => setCopilotOpen(true)}
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 text-xs font-semibold transition shadow-sm"
         >
           <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-          <span>Ask AI</span>
+          <span className="hidden sm:inline">Ask AI</span>
         </button>
 
-        {/* Refresh */}
+        {/* Refresh Telemetry */}
         <button
-          onClick={handleRefresh}
-          title="Refresh Telemetry"
+          onClick={refreshTelemetry}
+          title={`Refresh Telemetry (Updated ${lastUpdated})`}
           className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800 transition"
         >
           <RefreshCw className="w-4 h-4" />
+        </button>
+
+        {/* Keyboard shortcut help trigger (?) */}
+        <button
+          onClick={() => setKeyboardHelpOpen(true)}
+          title="Keyboard Shortcuts (?)"
+          className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800 transition hidden sm:block font-mono text-xs font-bold"
+        >
+          ?
         </button>
 
         {/* Notifications Bell */}

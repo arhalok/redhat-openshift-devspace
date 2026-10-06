@@ -8,6 +8,8 @@ import { KiranaBottomNav } from './KiranaBottomNav';
 import { CommandPalette } from './CommandPalette';
 import { ToastContainer } from '../common/ToastContainer';
 import { Drawer } from '../common/Drawer';
+import { KeyboardShortcutModal } from '../common/KeyboardShortcutModal';
+import { OrderCreationModal } from '../orders/OrderCreationModal';
 
 // Views
 import { ControlTowerView } from '../views/ControlTowerView';
@@ -91,6 +93,12 @@ export function AppShell() {
 
       {/* Toast Notification Container */}
       <ToastContainer />
+
+      {/* Keyboard Shortcut Help Dialog (?) */}
+      <KeyboardShortcutModal />
+
+      {/* Fast Order Creation Modal (<30s) */}
+      <OrderCreationModal />
 
       {/* Persistent AI Copilot Modal (when opened from Topbar or anywhere) */}
       {copilotOpen && (
