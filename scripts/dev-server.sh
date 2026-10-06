@@ -38,7 +38,7 @@ start_server() {
   cd "${PROJECT_DIR}"
   
   export PORT="${PORT}"
-  nohup npm run dev </dev/null > "${LOG_FILE}" 2>&1 &
+  nohup setsid node ./node_modules/.bin/next dev -H 0.0.0.0 -p "${PORT}" </dev/null > "${LOG_FILE}" 2>&1 &
   local new_pid=$!
   disown "${new_pid}" 2>/dev/null || true
   echo "${new_pid}" > "${PID_FILE}"
