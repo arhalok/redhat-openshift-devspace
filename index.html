@@ -3,176 +3,1299 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dev Spaces Test Page</title>
+  <title>Kirana-to-Company Logistics Platform — Phase 1</title>
   <style>
     :root {
-      color-scheme: light dark;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --primary: #ee0000; /* Red Hat Red */
-      --primary-hover: #cc0000;
-      --border: #e2e8f0;
-      --success: #16a34a;
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --sidebar-bg: #0d1322;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-subtle: #6b7280;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-subtle: rgba(59, 130, 246, 0.12);
+      --accent: #10b981;
+      --accent-subtle: rgba(16, 185, 129, 0.12);
+      --warning: #f59e0b;
+      --warning-subtle: rgba(245, 158, 11, 0.12);
+      --danger: #ef4444;
+      --danger-subtle: rgba(239, 68, 68, 0.12);
+      --purple: #8b5cf6;
+      --purple-subtle: rgba(139, 92, 246, 0.12);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f172a;
-        --card-bg: #1e293b;
-        --text: #f8fafc;
-        --text-muted: #94a3b8;
-        --border: #334155;
-      }
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    /* Top Global Navbar */
+    header.global-nav {
+      height: 56px;
+      background: var(--sidebar-bg);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      z-index: 50;
     }
+    .brand { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; font-size: 1.05rem; }
+    .brand-badge { background: var(--primary-subtle); color: var(--primary); border: 1px solid var(--primary); padding: 0.15rem 0.5rem; font-size: 0.7rem; border-radius: 4px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; }
+    
+    .nav-center { display: flex; align-items: center; gap: 1rem; }
+    .golden-journey-banner { background: rgba(59, 130, 246, 0.15); border: 1px solid var(--primary); color: #93c5fd; padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+    .journey-btn { background: var(--primary); color: white; border: none; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+    .journey-btn:hover { background: var(--primary-hover); }
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .scenario-pill { display: flex; align-items: center; gap: 0.4rem; background: var(--card-bg); border: 1px solid var(--card-border); padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.78rem; }
+    .scenario-pill select { background: transparent; border: none; color: var(--text-main); font-family: inherit; font-size: 0.78rem; outline: none; cursor: pointer; }
+    .btn-action { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; transition: all 0.15s; }
+    .btn-action:hover { background: #1e293b; border-color: #374151; }
+    .btn-reset { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
+    .btn-reset:hover { background: var(--danger-subtle); }
+
+    /* Layout Frame */
+    .app-frame { display: flex; flex: 1; overflow: hidden; }
+
+    /* Left Sidebar */
+    aside.sidebar {
+      width: 240px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--card-border);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; padding: 0 0.5rem; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.55rem 0.85rem; border-radius: 6px; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.15s; user-select: none; }
+    .nav-item:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.04); }
+    .nav-item.active { color: white; background: var(--primary); font-weight: 600; }
+    .nav-heading { font-size: 0.68rem; text-transform: uppercase; color: var(--text-subtle); padding: 0.75rem 0.85rem 0.25rem; font-weight: 700; letter-spacing: 0.05em; }
+
+    .sidebar-footer { padding: 0.75rem 1rem; border-top: 1px solid var(--card-border); font-size: 0.75rem; color: var(--text-subtle); display: flex; flex-direction: column; gap: 0.25rem; }
+
+    /* Main Content Area */
+    main.content-area {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--bg);
       padding: 1.5rem;
-    }
-
-    main {
-      width: 100%;
-      max-width: 480px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    }
-
-    header {
-      margin-bottom: 1.5rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.375rem;
-      padding: 0.25rem 0.625rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-radius: 9999px;
-      background-color: rgba(22, 163, 74, 0.15);
-      color: var(--success);
-      margin-bottom: 0.75rem;
-    }
-
-    .badge::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: currentColor;
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-
-    .actions {
-      margin-top: 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 1.5rem;
     }
 
-    button {
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 0.625rem 1.25rem;
-      background-color: var(--primary);
-      color: #ffffff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
+    /* Views */
+    .view-container { display: none; flex-direction: column; gap: 1.25rem; }
+    .view-container.active { display: flex; }
 
-    button:hover {
-      background-color: var(--primary-hover);
-    }
+    /* View Header */
+    .view-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .view-title { font-size: 1.4rem; font-weight: 700; }
+    .view-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem; }
 
-    button:focus-visible {
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
-    }
+    /* KPI Grid */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; }
+    .kpi-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 1rem; cursor: pointer; transition: transform 0.15s, border-color 0.15s; }
+    .kpi-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+    .kpi-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
+    .kpi-value { font-size: 1.7rem; font-weight: 700; margin: 0.35rem 0; }
+    .kpi-subtext { font-size: 0.75rem; color: var(--accent); display: flex; align-items: center; gap: 0.25rem; }
+    .kpi-subtext.warning { color: var(--warning); }
+    .kpi-subtext.danger { color: var(--danger); }
 
-    .test-output {
-      margin-top: 1rem;
-      padding: 0.75rem 1rem;
-      border-radius: 6px;
-      background-color: var(--bg);
-      border: 1px solid var(--border);
-      font-size: 0.875rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: var(--text-muted);
-      word-break: break-all;
-    }
+    /* 2-Column Grid Layout */
+    .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; }
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 
-    footer {
-      margin-top: 1.5rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
+    /* Card Containers */
+    .panel-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+    .panel-header { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; font-weight: 600; }
+    .panel-body { padding: 1.15rem; flex: 1; }
+
+    /* Map Canvas */
+    .map-box { height: 380px; background: #070a13; border-radius: 6px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .map-svg { width: 100%; height: 100%; }
+    .map-controls { position: absolute; top: 10px; right: 10px; background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(4px); border: 1px solid var(--card-border); border-radius: 6px; padding: 0.5rem; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.72rem; }
+    .layer-toggle { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: var(--text-muted); }
+    .layer-toggle input { cursor: pointer; }
+
+    /* Tables */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    .data-table th { text-align: left; padding: 0.65rem 0.85rem; background: rgba(255, 255, 255, 0.02); color: var(--text-muted); border-bottom: 1px solid var(--card-border); font-weight: 600; }
+    .data-table td { padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--card-border); color: var(--text-main); }
+    .data-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    /* Badges */
+    .status-badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.5rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+    .badge-success { background: var(--accent-subtle); color: var(--accent); }
+    .badge-warning { background: var(--warning-subtle); color: var(--warning); }
+    .badge-danger { background: var(--danger-subtle); color: var(--danger); }
+    .badge-blue { background: var(--primary-subtle); color: var(--primary); }
+    .badge-purple { background: var(--purple-subtle); color: var(--purple); }
+
+    /* Interactive Stepper / Quantity */
+    .qty-stepper { display: inline-flex; align-items: center; border: 1px solid var(--card-border); border-radius: 4px; overflow: hidden; }
+    .qty-stepper button { background: var(--card-bg); color: var(--text-main); border: none; padding: 0.2rem 0.55rem; cursor: pointer; font-size: 0.9rem; }
+    .qty-stepper button:hover { background: #1f2937; }
+    .qty-stepper span { padding: 0.2rem 0.6rem; font-family: var(--font-mono); font-size: 0.8rem; min-width: 32px; text-align: center; }
+
+    /* Action Buttons inside tables / panels */
+    .btn-sm-primary { background: var(--primary); color: white; border: none; padding: 0.3rem 0.65rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+    .btn-sm-primary:hover { background: var(--primary-hover); }
+    .btn-sm-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid var(--card-border); padding: 0.3rem 0.65rem; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
+    .btn-sm-secondary:hover { background: rgba(255, 255, 255, 0.1); }
+
+    /* Progress bar */
+    .capacity-bar { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden; margin-top: 0.35rem; }
+    .capacity-fill { height: 100%; border-radius: 9999px; }
+
+    /* Drawer / Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; width: 550px; max-width: 90vw; max-height: 85vh; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 1.15rem; font-weight: 700; }
+    .modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.25rem; }
+
+    /* Golden Journey Step Overlay */
+    .journey-toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; border: 1px solid var(--primary); border-radius: 8px; padding: 1rem; width: 380px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); z-index: 90; display: flex; flex-direction: column; gap: 0.6rem; }
+    .journey-step-num { font-size: 0.7rem; text-transform: uppercase; color: var(--primary); font-weight: 700; letter-spacing: 0.05em; }
+    .journey-step-title { font-size: 0.95rem; font-weight: 700; }
+    .journey-step-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+    .journey-step-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 0.3rem; }
+
+    /* AI Chat Copilot */
+    .chat-container { display: flex; flex-direction: column; height: 500px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden; }
+    .chat-messages { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+    .chat-bubble { max-width: 80%; padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.5; }
+    .chat-bubble.bot { align-self: flex-start; background: #1e293b; border: 1px solid var(--card-border); }
+    .chat-bubble.user { align-self: flex-end; background: var(--primary); color: white; }
+    .chat-input-row { display: flex; padding: 0.75rem; border-top: 1px solid var(--card-border); gap: 0.5rem; background: var(--sidebar-bg); }
+    .chat-input { flex: 1; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 6px; padding: 0.6rem 0.85rem; color: var(--text-main); font-family: inherit; font-size: 0.85rem; outline: none; }
+    .chat-input:focus { border-color: var(--primary); }
+
+    /* Timeline component */
+    .timeline { display: flex; flex-direction: column; gap: 0.85rem; margin-top: 0.5rem; }
+    .timeline-item { display: flex; gap: 0.75rem; font-size: 0.8rem; }
+    .timeline-bullet { width: 10px; height: 10px; border-radius: 50%; background: var(--primary); margin-top: 4px; }
+    .timeline-content { display: flex; flex-direction: column; }
+    .timeline-time { color: var(--text-subtle); font-size: 0.72rem; }
+
+    /* Highlight pulse */
+    @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+    .highlight-focus { animation: pulse-ring 2s infinite; border-color: var(--primary) !important; }
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <div class="badge">Online</div>
-      <h1>Test Page</h1>
-      <p>Simple test page running in the OpenShift Dev Spaces environment.</p>
-    </header>
 
-    <section aria-label="Interactive Test Area">
-      <div class="actions">
-        <button type="button" id="btn-test">Click to Test Interaction</button>
+  <!-- Top Global Navbar -->
+  <header class="global-nav">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.2z"/><path d="m21 12-4-2.5v5l4-2.5z"/></svg>
+      <span>KiranaFlow</span>
+      <span class="brand-badge">Phase 1 Demo</span>
+    </div>
+
+    <!-- Golden Demo Guide Banner -->
+    <div class="nav-center">
+      <div class="golden-journey-banner">
+        <span>⭐ <strong>Golden Demo Tour:</strong> Step <span id="tour-step-badge">1</span> of 14</span>
+        <button class="journey-btn" id="btn-next-tour">Next Step &rarr;</button>
       </div>
-      <div id="output" class="test-output">Status: Waiting for interaction...</div>
-    </section>
+    </div>
 
-    <footer>
-      Environment: OpenShift Dev Spaces
-    </footer>
-  </main>
+    <div class="nav-right">
+      <div class="scenario-pill">
+        <span style="color: var(--text-muted);">Scenario:</span>
+        <select id="scenario-selector">
+          <option value="normal-day">Normal Operations</option>
+          <option value="peak-demand">Festival Peak Surge (+60%)</option>
+          <option value="supplier-delay">Tier-1 Supplier Bottleneck</option>
+          <option value="vehicle-shortage">Fleet EV Maintenance (-35%)</option>
+          <option value="return-load-opportunity">Return Backhaul Recovery</option>
+        </select>
+      </div>
+      <button class="btn-action btn-reset" id="btn-reset-demo" title="Reset all demo records deterministically">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Reset Demo
+      </button>
+    </div>
+  </header>
+
+  <!-- Main App Shell -->
+  <div class="app-frame">
+    
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-heading nav-heading">Operations</div>
+        <ul class="sidebar-nav">
+          <li class="nav-item active" data-view="control-tower">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            Control Tower
+          </li>
+          <li class="nav-item" data-view="orders">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            Order Workflow
+          </li>
+          <li class="nav-item" data-view="consolidation">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 6-6-6-6"/><path d="M8 8 2 14l6 6"/><path d="M22 10H8a4 4 0 0 0-4 4v6"/></svg>
+            Consolidation
+          </li>
+          <li class="nav-item" data-view="capacity-matching">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            Return Capacity
+          </li>
+        </ul>
+
+        <div class="sidebar-heading nav-heading">Kirana Store</div>
+        <ul class="sidebar-nav">
+          <li class="nav-item" data-view="smart-replenishment">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            Replenishment
+          </li>
+          <li class="nav-item" data-view="supplier-intelligence">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Supplier Ranking
+          </li>
+        </ul>
+
+        <div class="sidebar-heading nav-heading">Intelligence</div>
+        <ul class="sidebar-nav">
+          <li class="nav-item" data-view="simulator">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="m17 5-5-3-5 3"/><path d="m17 19-5 3-5-3"/><path d="M2 12h20"/><path d="m5 7-3 5 3 5"/><path d="m19 7 3 5-3 5"/></svg>
+            What-if Simulator
+          </li>
+          <li class="nav-item" data-view="ai-copilot">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+            AI Copilot
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div>PostGIS + PostGIS Geo Engine</div>
+        <div>Deterministic INR Minor Units</div>
+      </div>
+    </aside>
+
+    <!-- Main Dynamic Content Workspace -->
+    <main class="content-area">
+
+      <!-- ================= 1. CONTROL TOWER VIEW ================= -->
+      <section id="view-control-tower" class="view-container active">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Network Control Tower</h1>
+            <p class="view-subtitle">Real-time Bangalore distribution telemetry, active dispatch routes, and exception radar.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-action" onclick="switchView('orders')">View Orders (142)</button>
+            <button class="btn-action" style="background: var(--primary); color: white;" onclick="switchView('consolidation')">Consolidate Orders</button>
+          </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid">
+          <div class="kpi-card" onclick="switchView('orders')">
+            <div class="kpi-label">Orders Today</div>
+            <div class="kpi-value">142</div>
+            <div class="kpi-subtext">+18% vs yesterday</div>
+          </div>
+          <div class="kpi-card" onclick="switchView('control-tower')">
+            <div class="kpi-label">Active Deliveries</div>
+            <div class="kpi-value">18</div>
+            <div class="kpi-subtext">On track (94.2% SLA)</div>
+          </div>
+          <div class="kpi-card" onclick="switchView('control-tower')">
+            <div class="kpi-label">Stores Served</div>
+            <div class="kpi-value">64</div>
+            <div class="kpi-subtext">4 Bangalore Clusters</div>
+          </div>
+          <div class="kpi-card" onclick="switchView('capacity-matching')">
+            <div class="kpi-label">Fleet Capacity</div>
+            <div class="kpi-value">76%</div>
+            <div class="kpi-subtext warning">3 Return runs unbooked</div>
+          </div>
+          <div class="kpi-card highlight-focus" onclick="openExceptionsDrawer()">
+            <div class="kpi-label">Orders At Risk</div>
+            <div class="kpi-value" style="color: var(--danger);" id="kpi-orders-at-risk">3</div>
+            <div class="kpi-subtext danger">Click to resolve</div>
+          </div>
+          <div class="kpi-card" onclick="switchView('smart-replenishment')">
+            <div class="kpi-label">Stockout Risks</div>
+            <div class="kpi-value" style="color: var(--warning);">7 Stores</div>
+            <div class="kpi-subtext warning">Replenish now &rarr;</div>
+          </div>
+        </div>
+
+        <!-- 2-Column Map + Exception Panel -->
+        <div class="two-col">
+          
+          <!-- Live Map Panel -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span>Bangalore Distribution Topology</span>
+              <span class="status-badge badge-success">Live Engine</span>
+            </div>
+            <div class="panel-body" style="padding: 0;">
+              <div class="map-box">
+                <svg class="map-svg" viewBox="0 0 600 360">
+                  <!-- Grid / Streets backdrop -->
+                  <defs>
+                    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                    </pattern>
+                  </defs>
+                  <rect width="600" height="360" fill="url(#grid)" />
+
+                  <!-- Route Lines -->
+                  <path d="M 120 90 L 260 140 L 390 120 L 480 200" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="4 2" />
+                  <path d="M 120 90 L 190 230 L 320 260" fill="none" stroke="#10b981" stroke-width="2" />
+                  <path d="M 480 200 L 410 280 L 120 90" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="6 3" />
+
+                  <!-- Hubs / Warehouses -->
+                  <g transform="translate(120, 90)">
+                    <circle r="12" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" stroke-width="2"/>
+                    <rect x="-4" y="-4" width="8" height="8" fill="#3b82f6" />
+                    <text x="16" y="4" fill="#93c5fd" font-size="11" font-weight="600">Peenya Central Depot</text>
+                  </g>
+
+                  <!-- Suppliers -->
+                  <g transform="translate(480, 200)">
+                    <polygon points="0,-10 9,6 -9,6" fill="#8b5cf6" />
+                    <text x="14" y="4" fill="#c4b5fd" font-size="10">Apex FMCG Hub</text>
+                  </g>
+
+                  <!-- Kirana Stores -->
+                  <circle cx="260" cy="140" r="5" fill="#10b981" />
+                  <text x="270" y="143" fill="#9ca3af" font-size="9">Indiranagar (Manjunatha)</text>
+
+                  <circle cx="390" cy="120" r="5" fill="#10b981" />
+                  <text x="400" y="123" fill="#9ca3af" font-size="9">Koramangala Stores</text>
+
+                  <circle cx="190" cy="230" r="6" fill="#ef4444" />
+                  <text x="200" y="234" fill="#fca5a5" font-size="9" font-weight="700">Jayanagar (Stockout Risk)</text>
+
+                  <circle cx="320" cy="260" r="5" fill="#10b981" />
+                  <text x="330" y="263" fill="#9ca3af" font-size="9">BTM 2nd Stage</text>
+
+                  <!-- Moving Vehicles -->
+                  <g transform="translate(325, 130)">
+                    <circle r="7" fill="#f59e0b" />
+                    <text x="-3" y="3" fill="#111827" font-size="8" font-weight="700">V1</text>
+                  </g>
+                </svg>
+
+                <div class="map-controls">
+                  <label class="layer-toggle"><input type="checkbox" checked> Depots & Hubs</label>
+                  <label class="layer-toggle"><input type="checkbox" checked> Kirana Clusters</label>
+                  <label class="layer-toggle"><input type="checkbox" checked> Active Vehicles</label>
+                  <label class="layer-toggle"><input type="checkbox" checked> Backhaul Vectors</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Exception Radar Panel -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span>Exception Radar (Needs Action)</span>
+              <span class="status-badge badge-danger">3 Critical</span>
+            </div>
+            <div class="panel-body" style="padding: 0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Entity</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="exceptions-tbody">
+                  <tr>
+                    <td>
+                      <span class="status-badge badge-danger">Stockout Risk</span>
+                      <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Atta 10kg < 2 bags</div>
+                    </td>
+                    <td>Jayanagar Store</td>
+                    <td><button class="btn-sm-primary" onclick="switchView('smart-replenishment')">Replenish</button></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="status-badge badge-warning">Supplier Delay</span>
+                      <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">+18h lead time breach</div>
+                    </td>
+                    <td>FreshGro Hub</td>
+                    <td><button class="btn-sm-secondary" onclick="switchView('supplier-intelligence')">Reroute</button></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="status-badge badge-blue">Return Load</span>
+                      <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">38% empty capacity</div>
+                    </td>
+                    <td>Tata Ace (KA-03)</td>
+                    <td><button class="btn-sm-primary" onclick="switchView('capacity-matching')">Match</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ================= 2. SMART REPLENISHMENT VIEW ================= -->
+      <section id="view-smart-replenishment" class="view-container">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Smart Replenishment (Kirana Experience)</h1>
+            <p class="view-subtitle">Deterministic demand forecasting for <strong>Sri Manjunatha Provision Store</strong> (Indiranagar).</p>
+          </div>
+          <button class="btn-action" style="background: var(--accent); color: white;" onclick="openOrderDraftModal()">
+            Review & Create Order (₹14,250.00) &rarr;
+          </button>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <span>Recommended Product Reorders</span>
+            <span class="status-badge badge-blue">Deterministic Policy Engine</span>
+          </div>
+          <div class="panel-body" style="padding: 0;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Product Details</th>
+                  <th>Stock Balance</th>
+                  <th>Reason & Evidence</th>
+                  <th>Unit Price (Paise)</th>
+                  <th>Recommended Qty</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Aashirvaad Superior Atta 10kg</strong>
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">SKU: PROD-ATTA-10KG | Staples</div>
+                  </td>
+                  <td>
+                    <span style="color: var(--danger); font-weight: 700;">2 bags left</span>
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">Available = 2, Reserved = 0</div>
+                  </td>
+                  <td>
+                    <span class="status-badge badge-danger">LOW_CURRENT_STOCK</span>
+                    <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Stockout risk in 1.4 days (Velocity: 5.2/day)</div>
+                  </td>
+                  <td>
+                    <strong>₹445.00</strong>
+                    <div style="font-size: 0.72rem; color: var(--text-subtle);">44500 paise</div>
+                  </td>
+                  <td>
+                    <div class="qty-stepper">
+                      <button onclick="adjustQty(this, -5)">-</button>
+                      <span id="qty-atta">15</span>
+                      <button onclick="adjustQty(this, 5)">+</button>
+                    </div>
+                  </td>
+                  <td><button class="btn-sm-primary" onclick="switchView('supplier-intelligence')">Select Supplier</button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Fortune Sunlite Sunflower Oil 1L</strong>
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">SKU: PROD-OIL-1L | Edible Oils</div>
+                  </td>
+                  <td>
+                    <span style="color: var(--warning); font-weight: 700;">6 pouches</span>
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">Available = 6, Reserved = 2</div>
+                  </td>
+                  <td>
+                    <span class="status-badge badge-warning">HIGH_RECENT_DEMAND</span>
+                    <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">+35% festival sales velocity surge</div>
+                  </td>
+                  <td>
+                    <strong>₹115.00</strong>
+                    <div style="font-size: 0.72rem; color: var(--text-subtle);">11500 paise</div>
+                  </td>
+                  <td>
+                    <div class="qty-stepper">
+                      <button onclick="adjustQty(this, -10)">-</button>
+                      <span id="qty-oil">24</span>
+                      <button onclick="adjustQty(this, 10)">+</button>
+                    </div>
+                  </td>
+                  <td><button class="btn-sm-secondary" onclick="switchView('supplier-intelligence')">Select Supplier</button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Parle-G Gold Biscuits (Case 24x100g)</strong>
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">SKU: PROD-PARLE-G | FMCG</div>
+                  </td>
+                  <td>
+                    <span style="color: var(--accent); font-weight: 700;">12 cases</span>
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">Available = 10, Reserved = 2</div>
+                  </td>
+                  <td>
+                    <span class="status-badge badge-blue">REORDER_PATTERN</span>
+                    <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Weekly restocking schedule</div>
+                  </td>
+                  <td>
+                    <strong>₹240.00</strong>
+                    <div style="font-size: 0.72rem; color: var(--text-subtle);">24000 paise</div>
+                  </td>
+                  <td>
+                    <div class="qty-stepper">
+                      <button onclick="adjustQty(this, -2)">-</button>
+                      <span id="qty-parle">6</span>
+                      <button onclick="adjustQty(this, 2)">+</button>
+                    </div>
+                  </td>
+                  <td><button class="btn-sm-secondary" onclick="switchView('supplier-intelligence')">Select Supplier</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= 3. SUPPLIER INTELLIGENCE VIEW ================= -->
+      <section id="view-supplier-intelligence" class="view-container">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Supplier Intelligence & Decision Scoring</h1>
+            <p class="view-subtitle">Evaluating fulfillment options for <strong>Aashirvaad Atta 10kg (15 bags)</strong>.</p>
+          </div>
+        </div>
+
+        <div class="three-col">
+          <!-- Supplier Option 1 -->
+          <div class="panel-card highlight-focus">
+            <div class="panel-header" style="background: rgba(16, 185, 129, 0.1);">
+              <span>Apex FMCG Distribution Hub</span>
+              <span class="status-badge badge-success">Recommended (92.5)</span>
+            </div>
+            <div class="panel-body" style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="font-size: 1.35rem; font-weight: 700; color: var(--accent);">₹445.00 <span style="font-size: 0.8rem; color: var(--text-muted);">/ bag</span></div>
+              <div style="font-size: 0.8rem; line-height: 1.6;">
+                <div>✓ <strong>Reliability:</strong> 96.2% on-time delivery</div>
+                <div>✓ <strong>ETA:</strong> Tomorrow 09:00 AM (18h)</div>
+                <div>✓ <strong>Distance:</strong> 6.4 km from Indiranagar</div>
+                <div>✓ <strong>MOQ:</strong> 5 bags (Met)</div>
+                <div>✓ <strong>Fill Rate:</strong> 98.4%</div>
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); border-top: 1px solid var(--card-border); padding-top: 0.5rem;">
+                Why? Optimal trade-off between price, geographic proximity, and high fill rate.
+              </div>
+              <button class="btn-action" style="background: var(--accent); color: white; justify-content: center; margin-top: auto;" onclick="chooseSupplier('Apex FMCG Hub', 44500)">
+                Select for Fulfillment
+              </button>
+            </div>
+          </div>
+
+          <!-- Supplier Option 2 -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span>Karnataka Wholesale Mart</span>
+              <span class="status-badge badge-blue">Score: 84.1</span>
+            </div>
+            <div class="panel-body" style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="font-size: 1.35rem; font-weight: 700;">₹438.00 <span style="font-size: 0.8rem; color: var(--text-muted);">/ bag</span></div>
+              <div style="font-size: 0.8rem; line-height: 1.6;">
+                <div>⚠ <strong>Reliability:</strong> 87.5%</div>
+                <div>⚠ <strong>ETA:</strong> +2 Days (48h lead time)</div>
+                <div>✓ <strong>Distance:</strong> 18.2 km (Peenya)</div>
+                <div>⚠ <strong>MOQ:</strong> 25 bags (Exceeds requirement)</div>
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); border-top: 1px solid var(--card-border); padding-top: 0.5rem;">
+                Lower unit price but long lead time risks kirana stockout.
+              </div>
+              <button class="btn-action" style="justify-content: center; margin-top: auto;" onclick="chooseSupplier('Karnataka Wholesale', 43800)">
+                Select
+              </button>
+            </div>
+          </div>
+
+          <!-- Supplier Option 3 -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span>Kaveri Valley Direct</span>
+              <span class="status-badge badge-warning">Score: 78.0</span>
+            </div>
+            <div class="panel-body" style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="font-size: 1.35rem; font-weight: 700;">₹452.00 <span style="font-size: 0.8rem; color: var(--text-muted);">/ bag</span></div>
+              <div style="font-size: 0.8rem; line-height: 1.6;">
+                <div>✓ <strong>Reliability:</strong> 94.0%</div>
+                <div>✓ <strong>ETA:</strong> Tomorrow 02:00 PM</div>
+                <div>⚠ <strong>Distance:</strong> 22.4 km (Hosur Road)</div>
+                <div>✓ <strong>MOQ:</strong> 2 bags</div>
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); border-top: 1px solid var(--card-border); padding-top: 0.5rem;">
+                Higher logistics deviation and price per unit.
+              </div>
+              <button class="btn-action" style="justify-content: center; margin-top: auto;" onclick="chooseSupplier('Kaveri Valley', 45200)">
+                Select
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= 4. ORDER WORKFLOW VIEW ================= -->
+      <section id="view-orders" class="view-container">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Order Workflow & Transaction Audit</h1>
+            <p class="view-subtitle">End-to-end status machine with strict state transitions and domain audit events.</p>
+          </div>
+          <button class="btn-action" style="background: var(--primary); color: white;" onclick="switchView('consolidation')">
+            Check Consolidation Candidates &rarr;
+          </button>
+        </div>
+
+        <div class="two-col">
+          <!-- Orders Table -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span>Active Orders (Bangalore East Cluster)</span>
+              <span class="status-badge badge-blue">INR Minor Units</span>
+            </div>
+            <div class="panel-body" style="padding: 0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Order #</th>
+                    <th>Store</th>
+                    <th>Supplier</th>
+                    <th>Total (Paise)</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-tbody">
+                  <tr onclick="selectOrder('ORD-2026-1042')">
+                    <td><strong>ORD-2026-1042</strong></td>
+                    <td>Sri Manjunatha (Indiranagar)</td>
+                    <td>Apex FMCG Hub</td>
+                    <td>₹14,250.00 (1425000p)</td>
+                    <td><span class="status-badge badge-warning" id="status-1042">SUBMITTED</span></td>
+                    <td><button class="btn-sm-primary" onclick="advanceOrderStatus('ORD-2026-1042')">Confirm Order</button></td>
+                  </tr>
+                  <tr onclick="selectOrder('ORD-2026-1041')">
+                    <td><strong>ORD-2026-1041</strong></td>
+                    <td>Venkateshwara (Koramangala)</td>
+                    <td>Apex FMCG Hub</td>
+                    <td>₹8,920.00 (892000p)</td>
+                    <td><span class="status-badge badge-blue">CONFIRMED</span></td>
+                    <td><button class="btn-sm-secondary" onclick="advanceOrderStatus('ORD-2026-1041')">Dispatch</button></td>
+                  </tr>
+                  <tr onclick="selectOrder('ORD-2026-1040')">
+                    <td><strong>ORD-2026-1040</strong></td>
+                    <td>Laxmi Retail (Jayanagar)</td>
+                    <td>FreshGro Hub</td>
+                    <td>₹19,400.00 (1940000p)</td>
+                    <td><span class="status-badge badge-purple">DISPATCHED</span></td>
+                    <td><button class="btn-sm-secondary" onclick="advanceOrderStatus('ORD-2026-1040')">Deliver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Order Details & Timeline -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span id="detail-order-id">ORD-2026-1042 Details</span>
+              <span class="status-badge badge-success">Audited</span>
+            </div>
+            <div class="panel-body">
+              <div style="font-size: 0.85rem; line-height: 1.6; margin-bottom: 1rem;">
+                <div><strong>Consignee:</strong> Sri Manjunatha Provision Store</div>
+                <div><strong>Address:</strong> 12th Main HAL 2nd Stage, Indiranagar</div>
+                <div><strong>Items:</strong> 15x Atta 10kg, 24x Oil 1L, 6x Parle-G Case</div>
+                <div><strong>Idempotency Key:</strong> <code style="font-family: var(--font-mono); color: var(--primary);">idemp-9c8e21aa-4029</code></div>
+              </div>
+
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Event Audit Timeline</div>
+              <div class="timeline" id="order-timeline">
+                <div class="timeline-item">
+                  <div class="timeline-bullet" style="background: var(--accent);"></div>
+                  <div class="timeline-content">
+                    <strong>Order Created & Validated</strong>
+                    <span class="timeline-time">Today, 09:12 AM by Kirana App</span>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-bullet"></div>
+                  <div class="timeline-content">
+                    <strong>Inventory Reserved (available = 150 - 15)</strong>
+                    <span class="timeline-time">Today, 09:13 AM by InventoryService</span>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-bullet" style="background: var(--warning);"></div>
+                  <div class="timeline-content">
+                    <strong>Submitted to Apex FMCG Hub</strong>
+                    <span class="timeline-time">Today, 09:14 AM — Awaiting dispatch allocation</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= 5. CONSOLIDATION VIEW ================= -->
+      <section id="view-consolidation" class="view-container">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Dynamic Network Consolidation</h1>
+            <p class="view-subtitle">Aggregate fragmented orders destined for adjacent H3 zones into high-efficiency shared routes.</p>
+          </div>
+          <button class="btn-action" style="background: var(--primary); color: white;" onclick="applyConsolidation()">
+            Apply Consolidation Plan &rarr;
+          </button>
+        </div>
+
+        <div class="panel-card highlight-focus">
+          <div class="panel-header" style="background: rgba(59, 130, 246, 0.1);">
+            <span>Consolidation Proposal #C-801 (Bangalore East Corridor)</span>
+            <span class="status-badge badge-success">Projected Fuel Savings: 28%</span>
+          </div>
+          <div class="panel-body">
+            <div class="two-col" style="margin-bottom: 1.25rem;">
+              <div style="background: rgba(255, 255, 255, 0.02); padding: 1rem; border-radius: 6px; border: 1px solid var(--card-border);">
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Current Independent Plan</div>
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; line-height: 1.7;">
+                  <div>• 3 separate vehicles dispatched</div>
+                  <div>• Combined travel distance: <strong>44.6 km</strong></div>
+                  <div>• Vehicle Capacity Utilization: <strong style="color: var(--danger);">41% average</strong></div>
+                  <div>• Total estimated delivery duration: <strong>3h 40m</strong></div>
+                </div>
+              </div>
+              <div style="background: rgba(16, 185, 129, 0.05); padding: 1rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent); font-weight: 700;">Optimized Consolidated Proposal</div>
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; line-height: 1.7;">
+                  <div>• 1 single Tata Ace (KA-03-AA-8921)</div>
+                  <div>• Consolidated route distance: <strong style="color: var(--accent);">27.8 km (-16.8 km)</strong></div>
+                  <div>• Vehicle Capacity Utilization: <strong style="color: var(--accent);">84% optimized</strong></div>
+                  <div>• Estimated duration: <strong>2h 15m (-85 mins)</strong></div>
+                </div>
+              </div>
+            </div>
+
+            <h4 style="font-size: 0.85rem; margin-bottom: 0.5rem;">Grouped Kirana Orders in Cluster (H3 Cell: 88618925d3fffff):</h4>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Store</th>
+                  <th>Weight (kg)</th>
+                  <th>Volume (m³)</th>
+                  <th>Time Window</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ORD-2026-1042</td>
+                  <td>Sri Manjunatha (Indiranagar)</td>
+                  <td>245 kg</td>
+                  <td>1.4 m³</td>
+                  <td>09:00 - 11:30 AM</td>
+                </tr>
+                <tr>
+                  <td>ORD-2026-1041</td>
+                  <td>Venkateshwara (Koramangala)</td>
+                  <td>310 kg</td>
+                  <td>1.8 m³</td>
+                  <td>10:00 - 12:30 PM</td>
+                </tr>
+                <tr>
+                  <td>ORD-2026-1039</td>
+                  <td>Sai Supermarket (Domlur)</td>
+                  <td>280 kg</td>
+                  <td>1.6 m³</td>
+                  <td>10:30 - 01:00 PM</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= 6. RETURN CAPACITY MATCHING VIEW ================= -->
+      <section id="view-capacity-matching" class="view-container">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Return-Load / Empty-Capacity Matching</h1>
+            <p class="view-subtitle">Commercial backhaul load matching for delivery vehicles returning from outer routes.</p>
+          </div>
+        </div>
+
+        <div class="panel-card highlight-focus">
+          <div class="panel-header" style="background: rgba(245, 158, 11, 0.1);">
+            <span>Vehicle: Tata Ace (KA-03-AA-8921) — Returning from Whitefield</span>
+            <span class="status-badge badge-warning">Available Remaining Capacity: 420 kg (42%)</span>
+          </div>
+          <div class="panel-body">
+            <div style="font-size: 0.85rem; line-height: 1.6; margin-bottom: 1rem;">
+              <div>Current Mission: Completing final delivery at Whitefield Supermarket at 13:45.</div>
+              <div>Scheduled Destination: Peenya Central Depot (returning empty along Old Airport Rd).</div>
+            </div>
+
+            <h4 style="font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--accent);">Compatible Backhaul Pickup Opportunity Detected:</h4>
+            
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="font-size: 1rem;">Supplier Delta Hub (Packaging & Return Crates)</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem;">
+                  Pickup: HAL 3rd Stage (2.8 km deviation from route) | Weight: 260 kg | Volume: 1.5 m³
+                </div>
+                <div style="font-size: 0.8rem; margin-top: 0.25rem;">
+                  <span>Detour: <strong>+3.8 km / +16 mins</strong></span> &bull; 
+                  <span style="color: var(--accent);">Estimated Commercial Recovery: <strong>₹1,850.00 (185000p)</strong></span>
+                </div>
+              </div>
+              <button class="btn-action" style="background: var(--accent); color: white;" onclick="matchReturnLoad()">
+                Append Return Load &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= 7. WHAT-IF SIMULATOR VIEW ================= -->
+      <section id="view-simulator" class="view-container">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Logistics What-if Simulator</h1>
+            <p class="view-subtitle">Stress-test the distribution network under simulated supply and demand disruptions.</p>
+          </div>
+          <button class="btn-action" style="background: var(--purple); color: white;" onclick="runSimulation()">
+            Run Simulation &rarr;
+          </button>
+        </div>
+
+        <div class="two-col">
+          <!-- Simulation Parameters -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span>Disruption Parameters</span>
+              <span class="status-badge badge-purple">Sandbox Isolation</span>
+            </div>
+            <div class="panel-body" style="display: flex; flex-direction: column; gap: 1rem;">
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 600;">Demand Multiplier Surge (+25% to +100%)</label>
+                <input type="range" id="sim-demand" min="100" max="200" value="135" style="width: 100%; margin-top: 0.4rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+                  <span>100% (Normal)</span>
+                  <span id="sim-demand-val" style="color: var(--primary); font-weight: 700;">+35% Demand Surge</span>
+                  <span>200% (2x)</span>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 600;">Fleet Vehicle Availability</label>
+                <input type="range" id="sim-fleet" min="50" max="100" value="70" style="width: 100%; margin-top: 0.4rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+                  <span>50%</span>
+                  <span id="sim-fleet-val" style="color: var(--warning); font-weight: 700;">-30% Fleet Downtime</span>
+                  <span>100%</span>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 600;">Tier-1 FMCG Supplier Bottleneck</label>
+                <select id="sim-supplier-select" style="width: 100%; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 0.5rem; border-radius: 6px; margin-top: 0.35rem; font-size: 0.8rem;">
+                  <option value="none">Normal Operations (0h delay)</option>
+                  <option value="delay-24h" selected>Apex FMCG Distribution (+24h delay)</option>
+                  <option value="outage">Peenya Warehouse Outage (Offline)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulation Projection Output -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span>Projected Network Impact</span>
+              <span class="status-badge badge-warning" id="sim-status-badge">Run Required</span>
+            </div>
+            <div class="panel-body" id="sim-results-body" style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.85rem;">
+              <p style="color: var(--text-muted);">Adjust parameters and click <strong>"Run Simulation"</strong> to evaluate capacity gaps, stockout propagation, and SLA violation risks.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= 8. AI COPILOT VIEW ================= -->
+      <section id="view-ai-copilot" class="view-container">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">AI Operations Copilot</h1>
+            <p class="view-subtitle">Read-only operational intelligence with structured explanations, telemetry analysis, and action previews.</p>
+          </div>
+        </div>
+
+        <div class="chat-container">
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-bubble bot">
+              <strong>KiranaFlow Copilot:</strong> Hello! I monitor live distribution metrics, inventory balances, and fleet routing across the Bangalore network. How can I assist your operations team today?
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Ask: 'Why are today's deliveries at risk?' or 'Explain replenishment for Indiranagar'...">
+            <button class="btn-action" style="background: var(--primary); color: white;" onclick="sendChatMessage()">Send</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Interactive Golden Journey Toast Guidance -->
+  <div class="journey-toast" id="journey-toast">
+    <div class="journey-step-num" id="toast-step-num">Step 1 of 14</div>
+    <div class="journey-step-title" id="toast-step-title">Welcome to the Network Control Tower</div>
+    <div class="journey-step-desc" id="toast-step-desc">
+      Notice the Bangalore distribution map with live vehicle markers, telemetry KPIs, and exception radar. Start by inspecting the kirana store with stockout risk.
+    </div>
+    <div class="journey-step-actions">
+      <span style="font-size: 0.72rem; color: var(--text-subtle);">Click button to advance</span>
+      <button class="journey-btn" id="btn-toast-next" onclick="advanceTour()">Continue Tour &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Order Modal Preview -->
+  <div class="modal-overlay" id="order-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Order Proposal #ORD-2026-1042</div>
+        <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+      </div>
+      <div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+          Destination: <strong>Sri Manjunatha Provision Store</strong> (Indiranagar)<br>
+          Fulfillment Supplier: <strong>Apex FMCG Distribution Hub</strong>
+        </p>
+        <table class="data-table">
+          <thead>
+            <tr><th>Item</th><th>Qty</th><th>Price</th><th>Line Total</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Aashirvaad Atta 10kg</td><td>15</td><td>₹445.00</td><td>₹6,675.00</td></tr>
+            <tr><td>Fortune Sunflower Oil 1L</td><td>24</td><td>₹115.00</td><td>₹2,760.00</td></tr>
+            <tr><td>Parle-G Gold Biscuits (Case)</td><td>6</td><td>₹240.00</td><td>₹1,440.00</td></tr>
+          </tbody>
+        </table>
+        <div style="text-align: right; margin-top: 1rem; font-size: 1.1rem; font-weight: 700;">
+          Total: ₹10,875.00 <span style="font-size: 0.75rem; color: var(--text-muted);">(1087500 paise)</span>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
+        <button class="btn-action" onclick="closeOrderModal()">Cancel</button>
+        <button class="btn-action" style="background: var(--accent); color: white;" onclick="submitOrderProposal()">
+          Submit Order Proposal &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script>
-    const testButton = document.getElementById('btn-test');
-    const output = document.getElementById('output');
-    let clickCount = 0;
+    // Navigation routing
+    const navItems = document.querySelectorAll('.nav-item');
+    const viewContainers = document.querySelectorAll('.view-container');
 
-    testButton.addEventListener('click', () => {
-      clickCount++;
-      output.textContent = `Success: JavaScript interactive! (Clicked ${clickCount} time${clickCount === 1 ? '' : 's'})`;
-      output.style.color = 'var(--success)';
+    function switchView(viewId) {
+      navItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('data-view') === viewId);
+      });
+      viewContainers.forEach(container => {
+        container.classList.toggle('active', container.id === `view-${viewId}`);
+      });
+    }
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const viewId = item.getAttribute('data-view');
+        switchView(viewId);
+      });
+    });
+
+    // Golden Demo Tour Steps
+    const tourSteps = [
+      {
+        step: 1,
+        view: 'control-tower',
+        title: 'Network Control Tower',
+        desc: 'Observe the live Bangalore distribution map with active vehicle routes, capacity KPIs, and the Exception Radar.'
+      },
+      {
+        step: 2,
+        view: 'control-tower',
+        title: 'Identify Stockout Exception',
+        desc: 'Notice Jayanagar Store has a critical Stockout Risk for Atta 10kg (<2 bags). Let us navigate to Smart Replenishment.'
+      },
+      {
+        step: 3,
+        view: 'smart-replenishment',
+        title: 'Smart Replenishment Engine',
+        desc: 'The rule-based replenishment engine proactively recommended quantities based on sales velocity and lead-time buffers with explainable reason codes.'
+      },
+      {
+        step: 4,
+        view: 'supplier-intelligence',
+        title: 'Supplier Intelligence & Decision Scoring',
+        desc: 'Instead of picking just the lowest price, the multi-criteria scoring engine ranks Apex FMCG Hub #1 due to 96.2% reliability and next-day delivery.'
+      },
+      {
+        step: 5,
+        view: 'orders',
+        title: 'Real Order Workflow & State Machine',
+        desc: 'The order ORD-2026-1042 was proposed and is now in SUBMITTED state with exact integer minor unit totals and audit event logging.'
+      },
+      {
+        step: 6,
+        view: 'orders',
+        title: 'Confirm Order Transition',
+        desc: 'Click "Confirm Order" to observe strict status transition validation (SUBMITTED -> CONFIRMED).'
+      },
+      {
+        step: 7,
+        view: 'consolidation',
+        title: 'Dynamic Network Consolidation',
+        desc: 'KiranaFlow detects 3 compatible orders in the East Bangalore corridor and proposes grouping them into a single Tata Ace route, reducing distance from 44.6 km to 27.8 km.'
+      },
+      {
+        step: 8,
+        view: 'consolidation',
+        title: 'Apply Consolidation',
+        desc: 'Click "Apply Consolidation Plan" to allocate the shared route dispatch.'
+      },
+      {
+        step: 9,
+        view: 'capacity-matching',
+        title: 'Return-Load Capacity Recovery',
+        desc: 'Vehicle KA-03 returning from Whitefield has 42% empty capacity. The system matches a nearby return packaging load to recover ₹1,850.00 with only a 3.8 km detour.'
+      },
+      {
+        step: 10,
+        view: 'capacity-matching',
+        title: 'Match Return Load',
+        desc: 'Click "Append Return Load" to optimize the return trip.'
+      },
+      {
+        step: 11,
+        view: 'simulator',
+        title: 'What-if Logistics Simulator',
+        desc: 'Simulate a +35% festival demand surge and 30% EV fleet maintenance downtime without affecting live operational data.'
+      },
+      {
+        step: 12,
+        view: 'simulator',
+        title: 'Run Simulation Impact Analysis',
+        desc: 'Click "Run Simulation" to observe projected SLA violations and stockout risks.'
+      },
+      {
+        step: 13,
+        view: 'ai-copilot',
+        title: 'AI Operations Copilot',
+        desc: 'Ask the Copilot to explain current risks and receive structured summaries with evidence and recommended actions.'
+      },
+      {
+        step: 14,
+        view: 'control-tower',
+        title: 'Golden Demo Completed!',
+        desc: 'You have experienced the full end-to-end journey: proactive replenishment, supplier ranking, order creation, consolidation, capacity matching, simulation, and AI guidance.'
+      }
+    ];
+
+    let currentTourIdx = 0;
+
+    function advanceTour() {
+      currentTourIdx = (currentTourIdx + 1) % tourSteps.length;
+      const step = tourSteps[currentTourIdx];
+      
+      switchView(step.view);
+      document.getElementById('tour-step-badge').textContent = step.step;
+      document.getElementById('toast-step-num').textContent = `Step ${step.step} of ${tourSteps.length}`;
+      document.getElementById('toast-step-title').textContent = step.title;
+      document.getElementById('toast-step-desc').textContent = step.desc;
+
+      if (step.step === 12) {
+        runSimulation();
+      }
+      if (step.step === 13) {
+        triggerSampleCopilotQuery();
+      }
+    }
+
+    document.getElementById('btn-next-tour').addEventListener('click', advanceTour);
+
+    // Quantity Stepper
+    function adjustQty(btn, delta) {
+      const span = btn.parentElement.querySelector('span');
+      let val = parseInt(span.textContent, 10) + delta;
+      if (val < 1) val = 1;
+      span.textContent = val;
+    }
+
+    // Modal Handlers
+    function openOrderDraftModal() {
+      document.getElementById('order-modal').classList.add('active');
+    }
+    function closeOrderModal() {
+      document.getElementById('order-modal').classList.remove('active');
+    }
+    function submitOrderProposal() {
+      closeOrderModal();
+      switchView('orders');
+      advanceTour();
+    }
+
+    // Supplier selection
+    function chooseSupplier(name, pricePaise) {
+      alert(`Selected ${name} (${(pricePaise/100).toLocaleString('en-IN', {style:'currency', currency:'INR'})}) for order fulfillment.`);
+      openOrderDraftModal();
+    }
+
+    // Order status progression
+    function advanceOrderStatus(orderId) {
+      const statusBadge = document.getElementById('status-1042');
+      if (statusBadge && statusBadge.textContent === 'SUBMITTED') {
+        statusBadge.textContent = 'CONFIRMED';
+        statusBadge.className = 'status-badge badge-blue';
+        
+        // Add timeline item
+        const timeline = document.getElementById('order-timeline');
+        const item = document.createElement('div');
+        item.className = 'timeline-item';
+        item.innerHTML = `
+          <div class="timeline-bullet" style="background: var(--primary);"></div>
+          <div class="timeline-content">
+            <strong>Order Confirmed by Apex FMCG Hub</strong>
+            <span class="timeline-time">Just now by Dispatcher</span>
+          </div>
+        `;
+        timeline.appendChild(item);
+      } else if (statusBadge) {
+        statusBadge.textContent = 'READY_FOR_DISPATCH';
+        statusBadge.className = 'status-badge badge-purple';
+      }
+    }
+
+    // Consolidation action
+    function applyConsolidation() {
+      alert("Success: Consolidation Proposal #C-801 applied! Consolidated route assigned to Tata Ace KA-03-AA-8921. 16.8 km saved.");
+      advanceTour();
+    }
+
+    // Return load match
+    function matchReturnLoad() {
+      alert("Success: Backhaul load from Supplier Delta appended to KA-03-AA-8921 route. Estimated recovery: ₹1,850.00.");
+      advanceTour();
+    }
+
+    // What-if simulator
+    function runSimulation() {
+      const badge = document.getElementById('sim-status-badge');
+      const results = document.getElementById('sim-results-body');
+      
+      badge.textContent = "Simulation Computed";
+      badge.className = "status-badge badge-danger";
+
+      results.innerHTML = `
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.85rem; border-radius: 6px;">
+          <strong style="color: var(--danger);">High Operational Risk Detected:</strong>
+          <div style="margin-top: 0.4rem; line-height: 1.6;">
+            <div>• Projected SLA Violations: <strong>14 orders (Indiranagar & Whitefield)</strong></div>
+            <div>• Vehicle Deficit: <strong>5 additional 3-wheelers required</strong></div>
+            <div>• Stockout Cascade: <strong>6 Kiranas will run out of Atta and Cooking Oil</strong></div>
+            <div>• Estimated Revenue at Risk: <strong>₹84,200.00</strong></div>
+          </div>
+        </div>
+        <div style="margin-top: 0.5rem; font-size: 0.8rem;">
+          <strong>Recommended Mitigation:</strong>
+          <div style="color: var(--accent); margin-top: 0.25rem;">
+            ✓ Trigger dynamic consolidation for 8 overlapping orders.<br>
+            ✓ Activate secondary distributor (Karnataka Wholesale) for North Bangalore.
+          </div>
+        </div>
+      `;
+    }
+
+    // AI Copilot interactions
+    function triggerSampleCopilotQuery() {
+      const messages = document.getElementById('chat-messages');
+      const userBubble = document.createElement('div');
+      userBubble.className = 'chat-bubble user';
+      userBubble.textContent = "Why are today's deliveries at risk in Jayanagar?";
+      messages.appendChild(userBubble);
+
+      setTimeout(() => {
+        const botBubble = document.createElement('div');
+        botBubble.className = 'chat-bubble bot';
+        botBubble.innerHTML = `
+          <strong>Analysis Summary:</strong> Jayanagar store deliveries are at risk due to a stockout on Aashirvaad Atta 10kg compounded by a +18h lead time delay from FreshGro Hub.<br><br>
+          <strong>Evidence:</strong>
+          <div>• Store current on-hand: 2 bags (velocity: 5.2/day)</div>
+          <div>• Supplier confirmed fill rate: 84.1%</div><br>
+          <strong>Recommended Action:</strong> Reroute replenishment to Apex FMCG Hub and consolidate with Koramangala route RT-BLR-102.
+        `;
+        messages.appendChild(botBubble);
+        messages.scrollTop = messages.scrollHeight;
+      }, 500);
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const messages = document.getElementById('chat-messages');
+      const userBubble = document.createElement('div');
+      userBubble.className = 'chat-bubble user';
+      userBubble.textContent = val;
+      messages.appendChild(userBubble);
+      input.value = '';
+
+      setTimeout(() => {
+        const botBubble = document.createElement('div');
+        botBubble.className = 'chat-bubble bot';
+        botBubble.innerHTML = `
+          <strong>Copilot Response:</strong> Telemetry query verified against active PostgreSQL state. All routing and financial calculations are deterministic. To execute modifications, please use the Preview -> Apply workflow in the Control Tower.
+        `;
+        messages.appendChild(botBubble);
+        messages.scrollTop = messages.scrollHeight;
+      }, 600);
+    }
+
+    document.getElementById('chat-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendChatMessage();
+    });
+
+    // Reset demo dataset
+    document.getElementById('btn-reset-demo').addEventListener('click', () => {
+      alert("Deterministic demo reset completed. All Bangalore topologies, stores, and inventory balances restored to seed baseline.");
+      location.reload();
+    });
+
+    // Scenario selector changes
+    document.getElementById('scenario-selector').addEventListener('change', (e) => {
+      alert(`Scenario switched to: "${e.target.value}". Dynamic parameters applied to simulator and demand radar.`);
     });
   </script>
 </body>
